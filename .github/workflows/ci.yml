@@ -1,0 +1,41 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-vercel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install root dev deps
+        run: |
+          cd apps/vercel-control-plane
+          npm install
+      - name: Run vercel tests
+        run: |
+          cd apps/vercel-control-plane
+          npm test
+
+  build-vps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install vps deps
+        run: |
+          cd apps/vps-storage
+          npm install
+      - name: Start vps (smoke)
+        run: |
+          cd apps/vps-storage
+          node -e "require('./dist/server.js')"
