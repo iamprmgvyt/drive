@@ -1,0 +1,7 @@
+{
+  "name": "drive-root",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ]
+}
